@@ -1,7 +1,6 @@
 package com.example.marketclone.model;
 
 import com.example.marketclone.requestDto.ProductRequestDto;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

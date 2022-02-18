@@ -27,8 +27,8 @@ public class ProductController {
     }
 
     // 상품 상세 조회하기 API
-    @GetMapping("/product/{id}")
-    public ProductResponseDto getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    @GetMapping("/product/{productId}")
+    public ProductResponseDto getProduct(@PathVariable Long productId) {
+        return productService.getProduct(productId);
     }
 }

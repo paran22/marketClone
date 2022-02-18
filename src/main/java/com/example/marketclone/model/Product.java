@@ -18,7 +18,7 @@ public class Product {
     private Long id;
 
     @Column(nullable = false)
-    private String productName;
+    private String name;
 
     @Column(nullable = false)
     private int price;
@@ -27,13 +27,13 @@ public class Product {
     private String desc;
 
     @Column(nullable = false)
-    private String productImg;
+    private String img;
 
     public Product(ProductRequestDto requestDto) {
-        this.productName = requestDto.getProductName();
+        this.name = requestDto.getProductName();
         this.price = requestDto.getPrice();
         this.desc = requestDto.getDesc();
-        this.productImg = requestDto.getProductImg();
+        this.img = requestDto.getProductImg();
     }
 
 }

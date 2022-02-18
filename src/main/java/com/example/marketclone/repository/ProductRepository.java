@@ -1,4 +1,7 @@
 package com.example.marketclone.repository;
 
-public interface ProductRepository {
+import com.example.marketclone.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<Product,Long> {
 }

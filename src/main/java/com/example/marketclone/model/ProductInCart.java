@@ -1,6 +1,5 @@
 package com.example.marketclone.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,8 +11,7 @@ import javax.persistence.*;
 public class ProductInCart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @Column(name = "productInCartId")
-    private Long productInCartId;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "productId")
@@ -22,10 +20,14 @@ public class ProductInCart {
     @Column(nullable = false)
     private Long count;
 
-    @Column(nullable = false)
-    private Long sumPrice;
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    private Order order;
 
-    @JsonIgnore
+    //이후 type 수정할 수 있습니다
+    @Column(nullable = false)
+    private String state;
+
     @ManyToOne
     @JoinColumn(name = "cartId")
     private Cart cart;
@@ -36,12 +38,19 @@ public class ProductInCart {
         cart.getProductInCartList().add(this);
     }
 
+    public void setOrder(Order order) {
+        this.order = order;
+        order.getProductInCartList().add(this);
+    }
+
     //생성 메소드
-    public ProductInCart(Product product, Long count, Long sumPrice, Cart cart) {
+    public ProductInCart(Product product, Long count, Order order,
+                         String state, Cart cart) {
         ProductInCart productInCart = new ProductInCart();
         this.product = product;
         this.count = count;
-        this.sumPrice = sumPrice;
+        productInCart.setOrder(order);
+        this.state = state;
         productInCart.setCart(cart);
     }
 

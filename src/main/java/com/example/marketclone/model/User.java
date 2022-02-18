@@ -13,8 +13,7 @@ import java.util.List;
 public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @Column(name = "userId")
-    private Long userId;
+    private Long id;
 
     @Column(nullable = false)
     private String username;

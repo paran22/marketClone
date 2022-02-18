@@ -1,6 +1,5 @@
 package com.example.marketclone.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,11 +14,10 @@ import java.util.List;
 public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    @Column(name = "orderId")
-    private Long orderId;
+    private Long id;
 
     @OneToMany(mappedBy = "order")
-    private List<ProductInOrder> productInOrdersList = new ArrayList<>();
+    private List<ProductInCart> productInCartList = new ArrayList<>();
 
     @Column(nullable = false)
     private Long totalPrice;
@@ -27,7 +25,6 @@ public class Order {
     @Column(nullable = false)
     private Long deliveryFee;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;

@@ -67,8 +67,5 @@ public class CartService {
             productInCartRepository.save(productInCart);
         }
 
-        // cart 업데이트
-
-
     }
 }

@@ -2,11 +2,14 @@ package com.example.marketclone.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class ProductInCart {
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +27,7 @@ public class ProductInCart {
     @JoinColumn(name = "orderId")
     private Order order;
 
-    //이후 type 수정할 수 있습니다
+    //order 혹은 cart
     @Column(nullable = false)
     private String state;
 
@@ -43,14 +46,23 @@ public class ProductInCart {
         order.getProductInCartList().add(this);
     }
 
-    //생성 메소드
-    public ProductInCart(Product product, Long count, String state, Cart cart) {
-        ProductInCart productInCart = new ProductInCart();
+    public void setProductInCart(Product product, Long count, String state) {
         this.product = product;
         this.count = count;
         this.state = state;
-        productInCart.setCart(cart);
     }
 
+    //생성 메소드
+    public static ProductInCart addProductInCart(Product product, Long count,
+                                                 String state, Cart cart) {
+        ProductInCart productInCart = new ProductInCart();
+        productInCart.setProductInCart(product, count, state);
+        productInCart.setCart(cart);
+        return productInCart;
+    }
 
+    // cart 연결 제거
+    public void removeCart() {
+        this.cart.getProductInCartList().remove(this);
+    }
 }

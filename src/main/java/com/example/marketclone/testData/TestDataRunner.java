@@ -133,8 +133,11 @@ public class TestDataRunner implements ApplicationRunner {
         Long count1 = 3L;
         Long count2 = 2L;
         String state = "cart";
-        ProductInCart productInCart1 = new ProductInCart(product1, count1, state, testUser1.getCart());
-        ProductInCart productInCart2 = new ProductInCart(product2, count2, state, testUser1.getCart());
+        //현재 productInCart에 cart null로 들어감
+        ProductInCart productInCart1 = ProductInCart.addProductInCart(
+                product1, count1, state, testUser1.getCart());
+        ProductInCart productInCart2 = ProductInCart.addProductInCart(
+                product2, count2, state, testUser1.getCart());
         productInCartRepository.save(productInCart1);
         productInCartRepository.save(productInCart2);
     }

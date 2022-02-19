@@ -35,12 +35,17 @@ public class Order {
         user.getOrderList().add(this);
     }
 
-    //생성메소드
-    public Order(Long totalPrice, Long deliveryFee, User user) {
-        Order order = new Order();
+    public void setOrder(Long totalPrice, Long deliveryFee) {
         this.totalPrice = totalPrice;
         this.deliveryFee = deliveryFee;
+    }
+
+    //생성 메소드
+    public static Order addOrder(Long totalPrice, Long deliveryFee, User user) {
+        Order order = new Order();
+        order.setOrder(totalPrice, deliveryFee);
         order.setUser(user);
+        return order;
     }
 
 }

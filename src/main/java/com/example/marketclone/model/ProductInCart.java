@@ -44,12 +44,10 @@ public class ProductInCart {
     }
 
     //생성 메소드
-    public ProductInCart(Product product, Long count, Order order,
-                         String state, Cart cart) {
+    public ProductInCart(Product product, Long count, String state, Cart cart) {
         ProductInCart productInCart = new ProductInCart();
         this.product = product;
         this.count = count;
-        productInCart.setOrder(order);
         this.state = state;
         productInCart.setCart(cart);
     }

@@ -36,39 +36,30 @@ public class CartService {
 
 
     // 장바구니 담기
+    @Transactional
     public void saveCart(Long productId, CartRequestDto cartRequestDto, UserDetailsImpl userDetails ) {
         Long count = cartRequestDto.getCount();
+        //         로그인한 유저 userdetail
+       Long cartId = userDetails.getUser().getCart().getId();
+       Cart cart = cartRepository.findById(cartId)
+               .orElseThrow(()-> new IllegalArgumentException("카트없다!!!!"));
 
-//        Cart cart = new Cart(productId,cartRequestDto);
-//        cartRepository.save(cart);
+        String state = "cart";
 
-        // 로그인한 유저 userdetail
-        Long userId = userDetails.getUser().getId();
-        Optional<User> user = userRepository.findById(userId);
-        User user1 = user.get();
-
-//        pro
-//        String string = productInCartRepository.toString(state);
-//        ProductInCart productInCart = new ProductInCart();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
 
 //        //그 유저가 선택한 프로덕트를 저장
-        Optional<Product> product1 = productRepository.findById(productId);
-        Product product = product1.get();
+        ProductInCart productInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
 
-        Optional<Cart> cart = cartRepository.findById(productId);
-        Cart cart1 = cart.get();
-
-//        // productInCart를 만들어주는거야
-////        ProductInCart productInCart = ProductInCart.addProductInCart(product, count, state, cart1 );   // 여기에 product, count, state, cartId
-//
-//        productInCartRepository.save(productInCart);
+        productInCartRepository.save(productInCart);
 
     }
-
-//    // 장바구니 조회
-//    public List<CartResponseDto> getAllCarts() {
 //
-//    }
+////    // 장바구니 조회
+////    public List<CartResponseDto> getAllCarts() {
+////
+////    }
 
 
     // 장바구니 수량 변경하기
@@ -76,11 +67,11 @@ public class CartService {
     }
 
 
-    // 장바구니 삭제
-    public void deleteCart(Long productInCartId) {
-        productInCartRepository.deleteAllByProductInCartId(productInCartId);
-        cartRepository.deleteAllByProductInCartId(productInCartId);
-    }
+//    // 장바구니 삭제
+//    public void deleteCart(Long productInCartId) {
+//        productInCartRepository.deleteAllByProductInCartId(productInCartId);
+//        cartRepository.deleteAllByProductInCartId(productInCartId);
+//    }
 
 
     @Transactional

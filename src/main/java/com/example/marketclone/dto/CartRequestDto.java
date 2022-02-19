@@ -9,7 +9,7 @@ import lombok.Setter;
 public class CartRequestDto {
     private Long count;
 
-    public CartRequestDto(Long count) {
-        this.count = count;
-    }
+//    public CartRequestDto(Long count) {
+//        this.count = count;
+//    }
 }

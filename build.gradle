@@ -36,6 +36,9 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     implementation 'com.auth0:java-jwt:3.13.0'
 
+    // https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
+
 }
 
 tasks.named('test') {

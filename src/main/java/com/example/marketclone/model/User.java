@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Entity
 public class User {
+
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
@@ -33,4 +34,19 @@ public class User {
     @OneToOne
     @JoinColumn(name = "cartId")
     private Cart cart;
+
+    public User(String username, String password, String email, String name, Cart cart){
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.cart = cart;
+    }
+
+    // cart 업데이트할 때 사용
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+
 }

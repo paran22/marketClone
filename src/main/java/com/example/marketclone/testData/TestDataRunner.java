@@ -1,10 +1,20 @@
 package com.example.marketclone.testData;
 
+import com.example.marketclone.model.Cart;
+import com.example.marketclone.model.Product;
+import com.example.marketclone.model.ProductInCart;
+import com.example.marketclone.model.User;
+import com.example.marketclone.repository.CartRepository;
+import com.example.marketclone.repository.ProductInCartRepository;
+import com.example.marketclone.repository.UserRepository;
 import com.example.marketclone.requestDto.ProductRequestDto;
+import com.example.marketclone.requestDto.SignupRequestDto;
 import com.example.marketclone.service.ProductService;
+import com.example.marketclone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,8 +23,32 @@ public class TestDataRunner implements ApplicationRunner {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    ProductInCartRepository productInCartRepository;
+
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+        // 테스트 User 생성
+        Cart cart = new Cart(0L, 3000L);
+        cartRepository.save(cart);
+        User testUser1 = new User("abc", passwordEncoder.encode("aaaa1234!"),
+                "abc@abc.abc", "르탄이", cart);
+
+        userRepository.save(testUser1);
 
         // 저장할 상품들
         ProductRequestDto requestDto1 = new ProductRequestDto(
@@ -78,8 +112,9 @@ public class TestDataRunner implements ApplicationRunner {
                 "https://img-cf.kurly.com/shop/data/goodsview/20220215/gv20000280347_1.jpg");
 
         // 상품 저장
-        productService.registerProduct(requestDto1);
-        productService.registerProduct(requestDto2);
+        Product product1, product2;
+        product1 = productService.registerProduct(requestDto1);
+        product2 = productService.registerProduct(requestDto2);
         productService.registerProduct(requestDto3);
         productService.registerProduct(requestDto4);
         productService.registerProduct(requestDto5);
@@ -88,5 +123,22 @@ public class TestDataRunner implements ApplicationRunner {
         productService.registerProduct(requestDto8);
         productService.registerProduct(requestDto9);
         productService.registerProduct(requestDto10);
+
+        // 테스트 Cart, ProductInCart 생성
+        cart.setTotalPrice(102900L);
+        cart.setDeliveryFee(0L);
+        cartRepository.save(cart);
+        testUser1.setCart(cart);
+        userRepository.save(testUser1);
+        Long count1 = 3L;
+        Long count2 = 2L;
+        String state = "cart";
+        //현재 productInCart에 cart null로 들어감
+        ProductInCart productInCart1 = ProductInCart.addProductInCart(
+                product1, count1, state, testUser1.getCart());
+        ProductInCart productInCart2 = ProductInCart.addProductInCart(
+                product2, count2, state, testUser1.getCart());
+        productInCartRepository.save(productInCart1);
+        productInCartRepository.save(productInCart2);
     }
 }

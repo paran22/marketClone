@@ -4,6 +4,7 @@ package com.example.marketclone.controller;
 import com.example.marketclone.dto.CartRequestDto;
 import com.example.marketclone.dto.CartResponseDto;
 import com.example.marketclone.service.CartService;
+import com.example.marketclone.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,29 +14,34 @@ import java.util.List;
 @RestController
 public class CartController {
     private final CartService cartService;
+    private final UserService userService;
 
     //장바구니 담기 POST
     @PostMapping("/cart/{productId}")
     public void saveCart(@PathVariable Long productId, @RequestBody CartRequestDto cartRequestDto) {
-        cartService.saveCarts(productId, cartRequestDto);
+//        if (userDetails == null) {
+//            throw new NoneLoginException("로그인 사용자만 이용할 수 있습니다.");
+//        }
+//        useService.
+        cartService.saveCart(productId, cartRequestDto);
     }
 
     //장바구니 조회 GET
     @GetMapping("/cart")
-    public List<CartResponseDto> getAllCart() {
+    public List<CartResponseDto> getAllCarts() {
         return cartService.getAllCarts();
     }
 
     //장바구니 수량 변경하기 PUT
     @PutMapping("/cart/{productInCartId}")
-    public void editCart(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
+    public void editCarts(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
         cartService.editCarts(productInCartId, cartRequestDto);
     }
 
     //장바구니 삭제 DELETE
     @DeleteMapping("/cart/{productInCartId}")
     public void deleteCart(@PathVariable Long productInCartId) {
-        cartService.deleteCarts(productInCartId);
+        cartService.deleteCart(productInCartId);
     }
 
 

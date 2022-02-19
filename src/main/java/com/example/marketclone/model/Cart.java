@@ -1,5 +1,6 @@
 package com.example.marketclone.model;
 
+import com.example.marketclone.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,12 @@ public class Cart {
 
     @Column(nullable = false)
     private Long deliveryFee;
+
+    public Cart(List<ProductInCart> productInCartList, Long totalPrice, Long deliveryFee) {
+        this.productInCartList = productInCartList;
+        this.totalPrice = totalPrice;
+        this.deliveryFee = deliveryFee;
+    }
+
 
 }

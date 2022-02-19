@@ -3,6 +3,7 @@ package com.example.marketclone.model;
 import com.example.marketclone.dto.CartRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Cart {
 
@@ -32,5 +34,10 @@ public class Cart {
         this.deliveryFee = deliveryFee;
     }
 
+
+    public Cart(Long totalPrice, Long deliveryFee) {
+        this.totalPrice = totalPrice;
+        this.deliveryFee = deliveryFee;
+    }
 
 }

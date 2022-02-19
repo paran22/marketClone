@@ -37,7 +37,7 @@ public class UserService {
             String name = requestDto.getName();
 
             // 장바구니 생성하기
-            Cart cart = new Cart(0L, 3000L);
+            Cart cart = new Cart();
             cartRepository.save(cart);
 
             User user = new User(username, email, password, name, cart);

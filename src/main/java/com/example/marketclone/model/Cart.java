@@ -1,5 +1,6 @@
 package com.example.marketclone.model;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart")
     private List<ProductInCart> productInCartList = new ArrayList<>();
+
 
 }

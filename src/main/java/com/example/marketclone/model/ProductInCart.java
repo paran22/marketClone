@@ -64,5 +64,6 @@ public class ProductInCart {
     // cart 연결 제거
     public void removeCart() {
         this.cart.getProductInCartList().remove(this);
+        this.cart = null;
     }
 }

@@ -28,7 +28,7 @@ public class SeleniumRunner {
         options.addArguments("--start-maximized");            // 전체화면으로 실행
         options.addArguments("--disable-popup-blocking");    // 팝업 무시
         options.addArguments("--disable-default-apps");     // 기본앱 사용안함
-        options.addArguments("headless");                   // 브라우저 실행이 내부로 전환, 눈에 안보인다.
+        //options.addArguments("headless");                   // 브라우저 실행이 내부로 전환, 눈에 안보인다.
 
         // WebDriver 객체 생성
         ChromeDriver driver = new ChromeDriver(options);
@@ -54,7 +54,6 @@ public class SeleniumRunner {
         // Product들을 담아서 반환해줄 리스트 객체 생성
         List<Product> products = new ArrayList<>();
 
-        // 30개만 크롤링
         for (int i = 0; i < names.size(); i++) {
 
             // 값이 들어오지 않으면 건너 뛰기

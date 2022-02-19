@@ -18,10 +18,15 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final SeleniumRunner seleniumRunner;
 
-    // 상품 등록 메소드
-    public void registerProducts() {
+    // RDS에 상품 등록 메소드
+    public void rdsRegisterProducts() {
         List<Product> products = seleniumRunner.getProducts();
         productRepository.saveAll(products);
+    }
+
+    public void testRegisterProduct(ProductRequestDto productRequestDto) {
+        Product product = new Product(productRequestDto);
+        productRepository.save(product);
     }
 
     // 전체 상품 조회 메소드

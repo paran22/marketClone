@@ -4,6 +4,7 @@ import com.example.marketclone.model.Product;
 import com.example.marketclone.repository.ProductRepository;
 import com.example.marketclone.requestDto.ProductRequestDto;
 import com.example.marketclone.responseDto.ProductResponseDto;
+import com.example.marketclone.testData.SeleniumRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,12 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final SeleniumRunner seleniumRunner;
 
     // 상품 등록 메소드
-    public Product registerProduct(ProductRequestDto requestDto) {
-        Product product = new Product(requestDto);
-        return productRepository.save(product);
+    public void registerProducts() {
+        List<Product> products = seleniumRunner.getProducts();
+        productRepository.saveAll(products);
     }
 
     // 전체 상품 조회 메소드

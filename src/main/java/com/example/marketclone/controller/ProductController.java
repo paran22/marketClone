@@ -12,13 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 public class ProductController {
-    private final ProductService productService;
 
-    // 상품 등록 API (프론트와 연결X)
-    @PostMapping("/register")
-    public Product registerProduct(@RequestBody ProductRequestDto requestDto) {
-        return productService.registerProduct(requestDto);
-    }
+    private final ProductService productService;
 
     // 전체 상품 조회하기 API
     @GetMapping("/products")

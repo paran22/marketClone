@@ -135,11 +135,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/product/**");
 
 
-        // 테스트용
-        skipPathList.add("GET,/cart/**");
-        skipPathList.add("POST,/cart/**");
-        skipPathList.add("PUT,/cart/**");
-        skipPathList.add("DELETE,/cart/**");
 
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(

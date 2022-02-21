@@ -29,9 +29,11 @@ public class CartService {
     public void saveCart(Long productId, CartRequestDto cartRequestDto, UserDetailsImpl userDetails ) {
         Long count = cartRequestDto.getCount();
         //로그인한 유저 userdetail
-        Long cartId = userDetails.getUser().getCart().getId();
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new IllegalArgumentException("카트없다!!!!"));
+        //Cart에서 ProductInCart를 즉시로딩으로 불러오니 해결됨
+        Cart cart = userDetails.getUser().getCart();
+//        Long cartId = userDetails.getUser().getCart().getId();
+//        Cart cart = cartRepository.findById(cartId)
+//                .orElseThrow(() -> new IllegalArgumentException("카트없다!!!!"));
         String state = "cart";
 
         List<ProductInCart> savedProductInCartList = cart.getProductInCartList();
@@ -76,9 +78,11 @@ public class CartService {
 
     // 장바구니 조회하기
     public Cart getCart(UserDetailsImpl userDetails) {
-        Long cartId = userDetails.getUser().getCart().getId();
-        Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(()-> new IllegalArgumentException("카트없다!!!!"));
+        //Cart에서 ProductInCart를 즉시로딩으로 불러오니 해결됨
+        Cart cart = userDetails.getUser().getCart();
+//        Long cartId = userDetails.getUser().getCart().getId();
+//        Cart cart = cartRepository.findById(cartId)
+//                .orElseThrow(()-> new IllegalArgumentException("카트없다!!!!"));
         return cart;
     }
 
@@ -95,6 +99,7 @@ public class CartService {
 //    }
 
 
+    // 주문하기
     @Transactional
     public void getOrder(OrderRequestDto orderRequestDto, UserDetailsImpl userDetails) {
         //productInCart 찾기
@@ -109,7 +114,7 @@ public class CartService {
         // user와 cart 찾기
         User user = userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("user를 찾을 수 없습니다."));
-        Cart cart = user.getCart();
+//        Cart cart = user.getCart();
 
         Long sumPrice = 0L;
         Long totalPrice = 0L;

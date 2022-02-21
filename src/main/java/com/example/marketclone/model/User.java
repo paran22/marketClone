@@ -28,9 +28,11 @@ public class User {
     @Column(nullable = false)
     private String name;
 
+    // fetch 기본값 LAZY
     @OneToMany(mappedBy = "user")
     private List<Order> orderList = new ArrayList<>();
 
+    // fetch 기본값 EAGER
     @OneToOne
     @JoinColumn(name = "cartId")
     private Cart cart;

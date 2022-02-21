@@ -17,6 +17,7 @@ public class ProductInCart {
     @Id
     private Long id;
 
+    // fetch 기본값 EAGER
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
@@ -24,7 +25,8 @@ public class ProductInCart {
     @Column(nullable = false)
     private Long count;
 
-    @ManyToOne
+    // fetch 기본값 EAGER
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orderId")
     private Order order;
 
@@ -32,8 +34,9 @@ public class ProductInCart {
     @Column(nullable = false)
     private String state;
 
+    // fetch 기본값 EAGER
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cartId")
     private Cart cart;
 

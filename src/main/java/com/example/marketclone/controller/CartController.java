@@ -28,8 +28,8 @@ public class CartController {
 
     //장바구니 담기 POST
     @PostMapping("/cart/{productId}")
-    public void saveCart(@PathVariable Long productId, @RequestBody CartRequestDto cartRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        cartService.saveCart(productId, cartRequestDto, userDetails);
+    public CartResponseDto saveCart(@PathVariable Long productId, @RequestBody CartRequestDto cartRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.saveCart(productId, cartRequestDto, userDetails);
     }
 //
 

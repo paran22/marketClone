@@ -9,6 +9,7 @@ import com.example.marketclone.responseDto.CartResponseDto;
 import com.example.marketclone.model.*;
 import com.example.marketclone.repository.*;
 
+import com.example.marketclone.responseDto.ProductResponseDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,20 +32,26 @@ public class CartService {
 
     // 장바구니 담기
     @Transactional
-    public void saveCart(Long productId, CartRequestDto cartRequestDto, UserDetailsImpl userDetails ) {
+    public CartResponseDto saveCart(Long productId, CartRequestDto cartRequestDto, UserDetailsImpl userDetails) {
         Long count = cartRequestDto.getCount();
         //로그인한 유저 userdetail
         //Cart에서 ProductInCart를 즉시로딩으로 불러오니 해결됨
         Cart cart = userDetails.getUser().getCart();
-//        Long cartId = userDetails.getUser().getCart().getId();
-//        Cart cart = cartRepository.findById(cartId)
-//                .orElseThrow(() -> new IllegalArgumentException("카트없다!!!!"));
         String state = "cart";
+
+        //상품찾아서 ProductResponseDto에 담기
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        ProductResponseDto productResponseDto = new ProductResponseDto(product);
+
+        ProductInCart newProductInCart;
 
         List<ProductInCart> savedProductInCartList = cart.getProductInCartList();
         // 장바구니에 담긴 상품이 없으면 새로운 상품 저장
         if (savedProductInCartList.size() == 0) {
-            saveProductInCart(productId, cart, count, state);
+            //그 유저가 선택한 프로덕트를 저장
+            newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+            productInCartRepository.save(newProductInCart);
             // 장바구니에 담긴 상품이 있으면
         } else {
             // 장바구니에 담긴 상품id List를 만들기
@@ -58,21 +65,27 @@ public class CartService {
                     if (productInCart.getProduct().getId().equals(productId)) {
                         productInCart.setCount(productInCart.getCount() + count);
                         productInCartRepository.save(productInCart);
+                        return new CartResponseDto(productInCart.getId(), productResponseDto, productInCart.getCount());
                     }
                 }
-                return;
             } // 새로운 상품은 저장
-            saveProductInCart(productId, cart, count, state);
+            //그 유저가 선택한 프로덕트를 저장
+            newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+            productInCartRepository.save(newProductInCart);
         }
+        return new CartResponseDto(newProductInCart.getId(), productResponseDto, count);
     }
 
-    private void saveProductInCart(Long productId, Cart cart, Long count, String state) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
-        //그 유저가 선택한 프로덕트를 저장
-        ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-        productInCartRepository.save(newProductInCart);
-    }
+
+
+//    private ProductInCart saveProductInCart(Long productId, Cart cart, Long count, String state) {
+//        Product product = productRepository.findById(productId)
+//                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+//        //그 유저가 선택한 프로덕트를 저장
+//        ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+//        productInCartRepository.save(newProductInCart);
+//        return newProductInCart;
+//    }
 
 
     //    // 장바구니 조회
@@ -104,12 +117,13 @@ public class CartService {
             Long productId = eachProductInCart.getProduct().getId();
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+            ProductResponseDto productResponseDto = new ProductResponseDto(product);
 
             // 3. Long count 찾았다
             Long count = eachProductInCart.getCount();
 
             // CartResponseDto에 1. Long ProductInCartId, 2. List<Product> product, 3. Long count 넣어준다
-            CartResponseDto cartResponseDto = new CartResponseDto(productInCartId, product, count);
+            CartResponseDto cartResponseDto = new CartResponseDto(productInCartId, productResponseDto, count);
 
             // 반환할 리스트에 하나씩 넣어준다
             cartResponseDtoList.add(cartResponseDto);
@@ -155,7 +169,7 @@ public class CartService {
             productInCartList.add(productInCart);
         }
 
-        // user와 cart 찾기
+        // user찾기
         User user = userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("user를 찾을 수 없습니다."));
 

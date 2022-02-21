@@ -2,8 +2,9 @@ package com.example.marketclone.service;
 
 
 
-import com.example.marketclone.dto.CartRequestDto;
+import com.example.marketclone.requestDto.CartRequestDto;
 
+import com.example.marketclone.responseDto.CartResponseDto;
 import com.example.marketclone.model.*;
 import com.example.marketclone.repository.*;
 
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -51,27 +51,71 @@ public class CartService {
 
 //        //그 유저가 선택한 프로덕트를 저장
         ProductInCart productInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-
         productInCartRepository.save(productInCart);
 
     }
-//
-////    // 장바구니 조회
-////    public List<CartResponseDto> getAllCarts() {
-////
-////    }
 
+//    // 장바구니 조회
+    @Transactional
+    public List<CartResponseDto> getAllCarts(UserDetailsImpl userDetails) {
+// cartResponseDto에 1. Long ProductInCartId, 2. List<Product> product, 3. Long count
+// 위 3가지를 찾아서  cartResponseDto에 이 3가지가 이 3가지이다를 알려주고 넣은 뒤
+// arraylist 선언해서 cartResponseDtoList를 만들어준뒤 그 안에 넣고 리턴해주면된다
 
-    // 장바구니 수량 변경하기
-    public void editCarts(Long productInCartId, CartRequestDto cartRequestDto) {
+       // 반환할 리스트
+        List<CartResponseDto> cartResponseDtoList = new ArrayList<>();
+
+//    카트가 null 이 아니면 조건 넣어야된다?
+//        Long cartId = userDetails.getUser().getCart().getId();
+//까지 해서 cartId를 찾아서 그걸 List<CartResponseDto>형태로 넣어서 보내면 되는데 api명세서 보고 저거 하나하나 다 넣어줘야한다, for문을 돌려서서
+
+        // 로그인한 유저의 장바구니 찾기
+        Cart cart = userDetails.getUser().getCart();
+
+        // 장바구니 전체를 불러와 리스트에 저장한다.
+        List<ProductInCart> productInCartList = cart.getProductInCartList();
+
+        //for문을 돌면서 각 정보들 추가해
+        for (ProductInCart eachProductInCart : productInCartList) {
+            // 1. Long ProductInCartId 찾았고
+            Long productInCartId = eachProductInCart.getId();
+
+            // productId를 이용해서 2. Product product 찾자
+            Long productId = eachProductInCart.getProduct().getId();
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+
+            // 3. Long count 찾았다
+            Long count = eachProductInCart.getCount();
+
+            // CartResponseDto에 1. Long ProductInCartId, 2. List<Product> product, 3. Long count 넣어준다
+            CartResponseDto cartResponseDto = new CartResponseDto(productInCartId, product, count);
+
+            // 반환할 리스트에 하나씩 넣어준다
+            cartResponseDtoList.add(cartResponseDto);
+        }
+        //리스트를 돌려준다.
+        return cartResponseDtoList;
+
     }
 
 
-//    // 장바구니 삭제
-//    public void deleteCart(Long productInCartId) {
-//        productInCartRepository.deleteAllByProductInCartId(productInCartId);
-//        cartRepository.deleteAllByProductInCartId(productInCartId);
-//    }
+
+
+
+    // 장바구니 수량 변경하기
+    @Transactional
+    public void editCarts(Long productInCartId, CartRequestDto cartRequestDto) {
+        Long count = cartRequestDto.getCount();
+    }
+
+
+    // 장바구니 삭제   // 구현 테스트 완료
+    @Transactional
+    public void deleteCart(Long productInCartId) {
+        productInCartRepository.deleteById(productInCartId);
+        cartRepository.deleteAllById(productInCartId);
+    }
 
 
     @Transactional

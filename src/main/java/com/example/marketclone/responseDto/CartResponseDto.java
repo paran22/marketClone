@@ -1,9 +1,11 @@
-package com.example.marketclone.dto;
+package com.example.marketclone.responseDto;
 
 
 import com.example.marketclone.model.Product;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter

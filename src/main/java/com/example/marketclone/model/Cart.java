@@ -19,7 +19,8 @@ public class Cart {
     @Id
     private Long id;
 
-    @OneToMany(mappedBy = "cart")
+    // fetch 기본값 LAZY
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     private List<ProductInCart> productInCartList = new ArrayList<>();
 
 

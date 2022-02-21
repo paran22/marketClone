@@ -11,6 +11,8 @@ import com.example.marketclone.validation.SignupValidation;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 
 @Service
 public class UserService {
@@ -25,6 +27,7 @@ public class UserService {
         this.cartRepository = cartRepository;
     }
 
+    @Transactional
     public void registerUser(SignupRequestDto requestDto) {
         if (SignupValidation.validationSignupInput(requestDto)) {
             String username = requestDto.getUsername();

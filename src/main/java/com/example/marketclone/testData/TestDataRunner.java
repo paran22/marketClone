@@ -121,6 +121,5 @@ public class TestDataRunner implements ApplicationRunner {
 
         userRepository.save(testUser1);
 
-
     }
 }

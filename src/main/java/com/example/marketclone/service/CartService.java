@@ -1,18 +1,8 @@
 package com.example.marketclone.service;
 
-
-
 import com.example.marketclone.dto.CartRequestDto;
-
 import com.example.marketclone.model.*;
 import com.example.marketclone.repository.*;
-
-
-
-import com.example.marketclone.repository.OrderRepository;
-import com.example.marketclone.repository.ProductInCartRepository;
-import com.example.marketclone.repository.UserRepository;
-
 import com.example.marketclone.requestDto.OrderRequestDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +11,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -39,27 +28,59 @@ public class CartService {
     @Transactional
     public void saveCart(Long productId, CartRequestDto cartRequestDto, UserDetailsImpl userDetails ) {
         Long count = cartRequestDto.getCount();
-        //         로그인한 유저 userdetail
+        //로그인한 유저 userdetail
         Long cartId = userDetails.getUser().getCart().getId();
         Cart cart = cartRepository.findById(cartId)
-               .orElseThrow(()-> new IllegalArgumentException("카트없다!!!!"));
-
+                .orElseThrow(() -> new IllegalArgumentException("카트없다!!!!"));
         String state = "cart";
 
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
-
-//        //그 유저가 선택한 프로덕트를 저장
-        ProductInCart productInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-
-        productInCartRepository.save(productInCart);
-
+        List<ProductInCart> savedProductInCartList = cart.getProductInCartList();
+        // 장바구니에 담긴 상품이 없으면
+        if (savedProductInCartList.size() == 0) {
+            Product product = productRepository.findById(productId)
+                    .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+            //그 유저가 선택한 프로덕트를 저장
+            ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+            productInCartRepository.save(newProductInCart);
+        // 장바구니에 담긴 상품이 있으면
+        } else {
+            // 장바구니에 담긴 상품id List를 만들기
+            List<Long> savedProductIdList = new ArrayList<>();
+            for (ProductInCart productInCart : savedProductInCartList) {
+                savedProductIdList.add(productInCart.getProduct().getId());
+            }
+            // 이미 담긴 상품이면 count+
+            if (savedProductIdList.contains(productId)) {
+                for (ProductInCart productInCart : savedProductInCartList) {
+                    if (productInCart.getProduct().getId().equals(productId)) {
+                        productInCart.setCount(productInCart.getCount() + count);
+                        productInCartRepository.save(productInCart);
+                    }
+                }
+            // 새로운 상품은 저장
+            } else {
+                Product product = productRepository.findById(productId)
+                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+                //그 유저가 선택한 프로덕트를 저장
+                ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+                productInCartRepository.save(newProductInCart);
+            }
+        }
     }
 //
-////    // 장바구니 조회
-////    public List<CartResponseDto> getAllCarts() {
-////
-////    }
+    // 장바구니 조회
+//    public List<CartResponseDto> getAllCarts(UserDetailsImpl userDetails) {
+//        Cart cart = userDetails.getUser().getCart();
+//
+//    }
+
+    // 장바구니 조회하기
+    public Cart getCart(UserDetailsImpl userDetails) {
+        Long cartId = userDetails.getUser().getCart().getId();
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(()-> new IllegalArgumentException("카트없다!!!!"));
+        return cart;
+    }
 
 
 //    // 장바구니 수량 변경하기
@@ -115,6 +136,7 @@ public class CartService {
         }
 
     }
+
 }
 
 

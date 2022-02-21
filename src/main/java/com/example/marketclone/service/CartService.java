@@ -37,7 +37,7 @@ public class CartService {
         String state = "cart";
 
         List<ProductInCart> savedProductInCartList = cart.getProductInCartList();
-        // 장바구니에 담긴 상품이 없으면
+        // 장바구니에 담긴 상품이 없으면 새로운 상품 저장
         if (savedProductInCartList.size() == 0) {
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
@@ -139,9 +139,7 @@ public class CartService {
             productInCart.removeCart();
             productInCartRepository.save(productInCart);
         }
-
     }
-
 }
 
 

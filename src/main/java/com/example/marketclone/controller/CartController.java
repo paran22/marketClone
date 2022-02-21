@@ -49,11 +49,13 @@ public class CartController {
         cartService.deleteCart(productInCartId);
     }
 
-    //장바구니 수량 변경하기 PUT
-//    @PutMapping("/cart/{productInCartId}")
-//    public void editCarts(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
-//        cartService.editCarts(productInCartId, cartRequestDto);
-//    }
+
+
+//    장바구니 수량 변경하기 PUT
+    @PutMapping("/cart/{productInCartId}")
+    public void editCarts(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
+        cartService.editCarts(productInCartId, cartRequestDto);
+    }
 
 
 

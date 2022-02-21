@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -126,14 +127,25 @@ public class CartService {
     @Transactional
     public void editCarts(Long productInCartId, CartRequestDto cartRequestDto) {
         Long count = cartRequestDto.getCount();
+
+        ProductInCart productInCart = productInCartRepository.findById(productInCartId)
+                .orElseThrow(() -> new IllegalArgumentException("장바구니의 상품을 찾을 수 없습니다."));
+
+        productInCart.setCount(count);
+        productInCartRepository.save(productInCart);
     }
 
 
     // 장바구니 삭제   // 구현 테스트 완료
     @Transactional
     public void deleteCart(Long productInCartId) {
-        productInCartRepository.deleteById(productInCartId);
-        cartRepository.deleteAllById(productInCartId);
+        ProductInCart productInCart = productInCartRepository.findById(productInCartId)
+                .orElseThrow(() -> new IllegalArgumentException("장바구니의 상품을 찾을 수 없습니다."));
+        // cart와 productInCart의 관계를 끊기
+        productInCart.removeCart();
+        productInCartRepository.delete(productInCart);
+//        productInCartRepository.deleteById(productInCartId);
+
     }
 
 

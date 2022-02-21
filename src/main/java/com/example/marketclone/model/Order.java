@@ -25,6 +25,7 @@ public class Order {
     @Column(nullable = false)
     private Long deliveryFee;
 
+    // fetch 기본값 EAGER
     @ManyToOne
     @JoinColumn(name = "userId")
     private User user;

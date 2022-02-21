@@ -1,11 +1,11 @@
 package com.example.marketclone.controller;
 
-import com.example.marketclone.model.Product;
-import com.example.marketclone.requestDto.ProductRequestDto;
 import com.example.marketclone.responseDto.ProductResponseDto;
 import com.example.marketclone.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 

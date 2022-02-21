@@ -4,22 +4,18 @@ import com.example.marketclone.requestDto.SignupRequestDto;
 import com.example.marketclone.responseDto.UserInfoDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import com.example.marketclone.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequiredArgsConstructor
 @RestController
 public class UserController {
     private final UserService userService;
 
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     // 회원 가입 요청 처리
     @PostMapping("/user/signup")

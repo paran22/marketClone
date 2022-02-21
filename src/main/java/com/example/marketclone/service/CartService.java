@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -45,11 +44,7 @@ public class CartService {
         List<ProductInCart> savedProductInCartList = cart.getProductInCartList();
         // 장바구니에 담긴 상품이 없으면 새로운 상품 저장
         if (savedProductInCartList.size() == 0) {
-            Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
-            //그 유저가 선택한 프로덕트를 저장
-            ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-            productInCartRepository.save(newProductInCart);
+            saveProductInCart(productId, cart, count, state);
             // 장바구니에 담긴 상품이 있으면
         } else {
             // 장바구니에 담긴 상품id List를 만들기
@@ -65,19 +60,22 @@ public class CartService {
                         productInCartRepository.save(productInCart);
                     }
                 }
-                // 새로운 상품은 저장
-            } else {
-                Product product = productRepository.findById(productId)
-                        .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
-                //그 유저가 선택한 프로덕트를 저장
-                ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-                productInCartRepository.save(newProductInCart);
-            }
+                return;
+            } // 새로운 상품은 저장
+            saveProductInCart(productId, cart, count, state);
         }
     }
 
+    private void saveProductInCart(Long productId, Cart cart, Long count, String state) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        //그 유저가 선택한 프로덕트를 저장
+        ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+        productInCartRepository.save(newProductInCart);
+    }
 
-//    // 장바구니 조회
+
+    //    // 장바구니 조회
     @Transactional
     public List<CartResponseDto> getAllCarts(UserDetailsImpl userDetails) {
 // cartResponseDto에 1. Long ProductInCartId, 2. List<Product> product, 3. Long count
@@ -118,10 +116,7 @@ public class CartService {
         }
         //리스트를 돌려준다.
         return cartResponseDtoList;
-
     }
-
-
 
     // 장바구니 수량 변경하기
     @Transactional
@@ -148,8 +143,6 @@ public class CartService {
 
     }
 
-
-
     // 주문하기
     @Transactional
     public void getOrder(OrderRequestDto orderRequestDto, UserDetailsImpl userDetails) {
@@ -165,7 +158,6 @@ public class CartService {
         // user와 cart 찾기
         User user = userRepository.findById(userDetails.getUser().getId())
                 .orElseThrow(() -> new IllegalArgumentException("user를 찾을 수 없습니다."));
-//        Cart cart = user.getCart();
 
         Long sumPrice = 0L;
         Long totalPrice = 0L;

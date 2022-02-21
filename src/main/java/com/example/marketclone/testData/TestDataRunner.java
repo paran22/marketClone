@@ -114,7 +114,7 @@ public class TestDataRunner implements ApplicationRunner {
         productService.testRegisterProduct(requestDto10);
 
         // 테스트 User 생성
-        Cart cart = new Cart(0L, 3000L);
+        Cart cart = new Cart();
         cartRepository.save(cart);
         User testUser1 = new User("abc", passwordEncoder.encode("aaaa1234!"),
                 "abc@abc.abc", "르탄이", cart);

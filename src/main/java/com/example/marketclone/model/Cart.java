@@ -1,5 +1,6 @@
 package com.example.marketclone.model;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,15 +22,5 @@ public class Cart {
     @OneToMany(mappedBy = "cart")
     private List<ProductInCart> productInCartList = new ArrayList<>();
 
-    @Column(nullable = false)
-    private Long totalPrice;
 
-    @Column(nullable = false)
-    private Long deliveryFee;
-
-
-    public Cart(Long totalPrice, Long deliveryFee) {
-        this.totalPrice = totalPrice;
-        this.deliveryFee = deliveryFee;
-    }
 }

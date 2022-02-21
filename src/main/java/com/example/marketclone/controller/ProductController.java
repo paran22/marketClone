@@ -26,4 +26,11 @@ public class ProductController {
     public ProductResponseDto getProduct(@PathVariable Long productId) {
         return productService.getProduct(productId);
     }
+
+    // 일회용 - 마켓컬리 크롤링해서 RDS에 데이터 저장
+    @GetMapping("/rdsregisterproducts")
+    public void registerProducts( ) {
+        productService.rdsRegisterProducts();
+        System.out.println("크롤링 완료");
+    }
 }

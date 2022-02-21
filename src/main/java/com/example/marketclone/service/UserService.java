@@ -44,7 +44,6 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(UserDetailsImpl userDetails) {
-
         return new UserInfoDto(
                 userDetails.getUser().getUsername(),
                 userDetails.getUser().getName()

@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order extends Timestamped{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
@@ -24,6 +24,9 @@ public class Order {
 
     @Column(nullable = false)
     private Long deliveryFee;
+
+    @Column(nullable = false)
+    private String state;
 
     // fetch 기본값 EAGER
     @ManyToOne
@@ -39,6 +42,7 @@ public class Order {
     public void setOrder(Long totalPrice, Long deliveryFee) {
         this.totalPrice = totalPrice;
         this.deliveryFee = deliveryFee;
+        this.state = "주문확인";
     }
 
     //생성 메소드

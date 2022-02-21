@@ -40,9 +40,6 @@ public class CartController {
     }
 
 
-
-
-
     //장바구니 삭제 DELETE
     @DeleteMapping("/cart/{productInCartId}")
     public void deleteCart(@PathVariable Long productInCartId) {

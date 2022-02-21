@@ -8,24 +8,19 @@ import com.example.marketclone.requestDto.SignupRequestDto;
 import com.example.marketclone.responseDto.UserInfoDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import com.example.marketclone.validation.SignupValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-
+@RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
-
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, CartRepository cartRepository) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.cartRepository = cartRepository;
-    }
 
     @Transactional
     public void registerUser(SignupRequestDto requestDto) {

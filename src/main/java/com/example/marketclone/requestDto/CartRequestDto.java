@@ -1,4 +1,4 @@
-package com.example.marketclone.dto;
+package com.example.marketclone.requestDto;
 
 
 import lombok.Getter;

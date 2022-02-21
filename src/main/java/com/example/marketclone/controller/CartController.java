@@ -1,8 +1,14 @@
 package com.example.marketclone.controller;
 
-import com.example.marketclone.dto.CartRequestDto;
-import com.example.marketclone.dto.CartResponseDto;
+
+
+
+import com.example.marketclone.requestDto.CartRequestDto;
+
+import com.example.marketclone.responseDto.CartResponseDto;
+
 import com.example.marketclone.model.Cart;
+
 import com.example.marketclone.requestDto.OrderRequestDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import com.example.marketclone.service.CartService;
@@ -26,28 +32,32 @@ public class CartController {
         cartService.saveCart(productId, cartRequestDto, userDetails);
     }
 //
-//    // 장바구니 조회 GET
-//    @GetMapping("/cart")
-//    public List<CartResponseDto> getAllCarts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        return cartService.getAllCarts(userDetails);
-//    }
 
+    //장바구니 조회 GET
     @GetMapping("/cart")
-    public Cart getCart(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.getCart(userDetails);
+    public List<CartResponseDto> getAllCarts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return cartService.getAllCarts(userDetails);
     }
 
-    //장바구니 수량 변경하기 PUT
-//    @PutMapping("/cart/{productInCartId}")
-//    public void editCarts(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
-//        cartService.editCarts(productInCartId, cartRequestDto);
-//    }
 
-//    //장바구니 삭제 DELETE
-//    @DeleteMapping("/cart/{productInCartId}")
-//    public void deleteCart(@PathVariable Long productInCartId) {
-//        cartService.deleteCart(productInCartId);
-//    }
+
+
+
+    //장바구니 삭제 DELETE
+    @DeleteMapping("/cart/{productInCartId}")
+    public void deleteCart(@PathVariable Long productInCartId) {
+        cartService.deleteCart(productInCartId);
+    }
+
+
+
+//    장바구니 수량 변경하기 PUT
+    @PutMapping("/cart/{productInCartId}")
+    public void editCarts(@PathVariable Long productInCartId, @RequestBody CartRequestDto cartRequestDto) {
+        cartService.editCarts(productInCartId, cartRequestDto);
+    }
+
+
 
     // 주문하기
     @PostMapping("/order")

@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     // 일회용 - 마켓컬리 크롤링해서 RDS에 데이터 저장
-    @GetMapping("/rdsproducts")
+    @GetMapping("/rdsregisterproducts")
     public void registerProducts( ) {
         productService.rdsRegisterProducts();
         System.out.println("크롤링 완료");

@@ -45,61 +45,61 @@ public class TestDataRunner implements ApplicationRunner {
                 "[풀무원] 올바른 핫도그 5개입",
                 6300,
                 "담백하게 즐기는 온 가족 간식",
-                "https://img-cf.kurly.com/shop/data/goodsview/20211217/gv10000259282_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1639962988668y0.jpg");
 
         ProductRequestDto requestDto2 = new ProductRequestDto(
                 "1등급 한우 안심 스테이크 200g (냉장)",
                 42000,
                 "100g당 가격:21,000",
-                "https://img-cf.kurly.com/shop/data/goodsview/20200311/gv40000085142_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/158390543787y0.jpg");
 
         ProductRequestDto requestDto3 = new ProductRequestDto(
                 "친환경 하우스 딸기 (설향) 500g",
                 15400,
                 "촉촉하게 번지는 새콤달콤함",
-                "https://img-cf.kurly.com/shop/data/goodsview/20201229/gv40000140774_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1609229005971y0.jpg");
 
         ProductRequestDto requestDto4 = new ProductRequestDto(
                 "친환경 피망",
                 3790,
                 "어느요리에도 활용가능한 만능채소(1봉 2입)",
-                "https://img-cf.kurly.com/shop/data/goodsview/20170703/gv00000004729_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1499060053485y0.jpg");
 
         ProductRequestDto requestDto5 = new ProductRequestDto(
-                "[글래드] 지퍼백/매직백 11종",
+                "[글래드] 지퍼백 4종",
                 3200,
-                "신선한 보관을 위한 주방 필수품",
-                "https://img-cf.kurly.com/shop/data/goodsview/20220216/gv30000280784_1.jpg");
+                "환경호르몬 걱정 없이 안전하고 신선하게",
+                "https://img-cf.kurly.com/shop/data/goods/1566528090177y0.jpg");
 
         ProductRequestDto requestDto6 = new ProductRequestDto(
                 "[데체코] 엑스트라버진 올리브 오일",
                 9500,
                 "이탈리아의 우수 품종 올리브를 냉압착한 엑스트라버진 올리브유",
-                "https://img-cf.kurly.com/shop/data/goodsview/20170320/gv00000001034_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1452062613881y0.jpg");
 
         ProductRequestDto requestDto7 = new ProductRequestDto(
                 "친환경 감자 600g",
                 2690,
                 "어떤 음식을 해도 잘 어울리는 무농약 감자",
-                "https://img-cf.kurly.com/shop/data/goodsview/20170807/gv40000005913_1.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1456402788969y0.jpg");
 
         ProductRequestDto requestDto8 = new ProductRequestDto(
                 "[상하목장] 유기농 요구르트 플레인 400g",
                 3400,
                 "건강한 홈메이드 스타일",
-                "https://img-cf.kurly.com/shop/data/goods/daily/1bf6f2425023ce519987.jpg");
+                "https://img-cf.kurly.com/shop/data/goods/1477288322952y0.jpg");
 
         ProductRequestDto requestDto9 = new ProductRequestDto(
-                "[MAC] 파우더 키스 립스틱, 디보티드 투 칠리",
-                33000,
-                "깊고 그윽한 브릭 레드 컬러",
-                "https://img-cf.kurly.com/shop/data/goodsview/20220216/gv10000280764_1.jpg");
+                "[발뮤다] 더 팟 2종 K02B-WH",
+                151000,
+                "핸드 드립 커피, 감동의 경험이 되다.",
+                "https://img-cf.kurly.com/shop/data/goods/1637925410952y0.jpeg");
 
         ProductRequestDto requestDto10 = new ProductRequestDto(
-                "[Kurly's] 물티슈 2종",
-                8200,
-                "믿고 쓰는 우리 집 물티슈",
-                "https://img-cf.kurly.com/shop/data/goodsview/20220215/gv20000280347_1.jpg");
+                "[Kurly's] 시그니처 물티슈 2종",
+                1850,
+                "컬리가 만든 물티슈의 최선",
+                "https://img-cf.kurly.com/shop/data/goods/161053203517y0.jpg");
 
         // 상품 저장
         productService.testRegisterProduct(requestDto1);

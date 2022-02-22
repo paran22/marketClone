@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -28,6 +30,10 @@ public class Product {
 
     @Column(nullable = false)
     private String img;
+
+    // fetch 기본값 LAZY
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    private List<Comment> commentList = new ArrayList<>();
 
     public Product(ProductRequestDto requestDto) {
         this.name = requestDto.getProductName();

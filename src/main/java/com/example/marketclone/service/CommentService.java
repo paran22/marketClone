@@ -63,7 +63,10 @@ public class CommentService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
         User user = userDetails.getUser();
-        String imgUrl = s3Uploader.upload(img,"review");
+        String imgUrl = "";
+        if(img != null) {
+            imgUrl = s3Uploader.upload(img,"review");
+        }
         Comment comment = Comment.addComment(product, title, user, content, imgUrl);
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getId(), comment.getTitle(), user.getName(),

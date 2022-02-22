@@ -32,7 +32,7 @@ public class Product {
     private String img;
 
     // fetch 기본값 LAZY
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "product")
     private List<Comment> commentList = new ArrayList<>();
 
     public Product(ProductRequestDto requestDto) {
@@ -41,6 +41,7 @@ public class Product {
         this.desc = requestDto.getDesc();
         this.img = requestDto.getProductImg();
     }
+
 
 
 }

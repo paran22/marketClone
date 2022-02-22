@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
 
@@ -31,8 +30,9 @@ public class ProductInCart {
     private Order order;
 
     //order 혹은 cart
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String state;
+    private ProductState state;
 
     // fetch 기본값 EAGER
     @JsonIgnore
@@ -51,17 +51,16 @@ public class ProductInCart {
         order.getProductInCartList().add(this);
     }
 
-    public void setProductInCart(Product product, Long count, String state) {
+    public void setProductInCart(Product product, Long count) {
         this.product = product;
         this.count = count;
-        this.state = state;
+        this.state = ProductState.CART;
     }
 
     //생성 메소드
-    public static ProductInCart addProductInCart(Product product, Long count,
-                                                 String state, Cart cart) {
+    public static ProductInCart addProductInCart(Product product, Long count, Cart cart) {
         ProductInCart productInCart = new ProductInCart();
-        productInCart.setProductInCart(product, count, state);
+        productInCart.setProductInCart(product, count);
         productInCart.setCart(cart);
         return productInCart;
     }

@@ -1,5 +1,6 @@
 package com.example.marketclone.responseDto;
 
+import com.example.marketclone.model.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,22 +15,6 @@ public class OrderResponseDto {
     private List<ProductResponseDto> product;
     private Long totalPrice;
     private Long deliveryFee;
-    private String state;
-
-
-//    private List<OrderResponseDto> orderResponseDtoList;
-//
-//    @AllArgsConstructor
-//    @Setter
-//    @Getter
-//    public static class OrderResponseDto {
-//        private Long orderId;
-//        private String createdAt;
-//        private List<ProductResponseDto> product;
-//        private Long totalPrice;
-//        private Long deliveryFee;
-//        private String state;
-//    }
-
+    private OrderState state;
 
 }

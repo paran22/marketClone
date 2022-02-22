@@ -2,6 +2,7 @@ package com.example.marketclone.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +27,7 @@ public class S3Uploader {
     @Value("${aws.s3.image.bucket}")
     public String bucket;  // S3 버킷 이름
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+    public HashMap<String, String> upload(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                 .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
 
@@ -33,11 +35,14 @@ public class S3Uploader {
     }
 
     // S3로 파일 업로드하기
-    private String upload(File uploadFile, String dirName) {
+    private HashMap<String, String> upload(File uploadFile, String dirName) {
         String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
         removeNewFile(uploadFile);
-        return uploadImageUrl;
+        HashMap<String, String> imgInfo = new HashMap<>();
+        imgInfo.put("fileName", fileName);
+        imgInfo.put("img",uploadImageUrl);
+        return imgInfo;
     }
 
     // S3로 업로드
@@ -66,5 +71,10 @@ public class S3Uploader {
         }
 
         return Optional.empty();
+    }
+
+    // 파일 삭제하기
+    public void deleteFile(String fileName) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 }

@@ -41,6 +41,11 @@ public class Comment extends Timestamped {
         product.getCommentList().add(this);
     }
 
+    // product 연결 제거
+    public void removeProduct() {
+        this.product.getCommentList().remove(this);
+        this.product = null;
+    }
 
 
 

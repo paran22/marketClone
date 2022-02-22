@@ -3,6 +3,7 @@ package com.example.marketclone.controller;
 import com.example.marketclone.responseDto.CommentResponseDto;
 import com.example.marketclone.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,4 +22,9 @@ public class CommentController {
     }
 
 
+    // 댓글 삭제
+    @DeleteMapping("/comment/{commentId}")
+    public void deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+    }
 }

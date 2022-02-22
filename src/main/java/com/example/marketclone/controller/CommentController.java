@@ -9,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,16 +39,9 @@ public class CommentController {
                                             @AuthenticationPrincipal UserDetailsImpl userDetails,
                                             @RequestParam String title,
                                             @RequestParam String content,
-                                            @RequestParam MultipartFile img) throws IOException {
+                                            @RequestParam(required = false) MultipartFile img) throws IOException {
         return commentService.createComment(productId, userDetails, title, content, img);
     }
-
-    // 댓글 삭제하기
-//    @DeleteMapping("/comment/{commentId}")
-//    public void deleteComment(@PathVariable Long commentId,
-//                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//        commentService.deleteComment(commentId, userDetails);
-//    }
 
 
     // 댓글 삭제

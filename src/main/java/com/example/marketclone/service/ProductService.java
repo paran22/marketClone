@@ -6,6 +6,9 @@ import com.example.marketclone.requestDto.ProductRequestDto;
 import com.example.marketclone.responseDto.ProductResponseDto;
 import com.example.marketclone.testData.SeleniumRunner;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,8 +33,12 @@ public class ProductService {
     }
 
     // 전체 상품 조회 메소드
-    public List<ProductResponseDto> getAllProducts() {
-        List<Product> foundProductList = productRepository.findAll();
+    public List<ProductResponseDto> getAllProducts(int page, int size) {
+
+        Pageable pageable = PageRequest.of(page-1, size);
+        Page<Product> foundProductList = productRepository.findAll(pageable);
+
+//        List<Product> foundProductList = productRepository.findAll();
 
         // 찾아온 Product들을 PrductResponseDto에 담는 과정
         List<ProductResponseDto> productResponseDtoList = new ArrayList<>();

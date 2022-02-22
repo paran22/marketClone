@@ -3,9 +3,7 @@ package com.example.marketclone.controller;
 import com.example.marketclone.responseDto.ProductResponseDto;
 import com.example.marketclone.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +15,9 @@ public class ProductController {
 
     // 전체 상품 조회하기 API
     @GetMapping("/products")
-    public List<ProductResponseDto> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductResponseDto> getAllProducts(@RequestParam int page,
+                                                   @RequestParam int size) {
+        return productService.getAllProducts(page, size);
     }
 
     // 상품 상세 조회하기 API

@@ -7,7 +7,6 @@ import com.example.marketclone.responseDto.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,5 +43,15 @@ public class CommentService {
         }
         // 리스트를 돌려준다
         return commentResponseDtoList;
+    }
+
+
+    // 댓글 삭제
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+        // comment와 product의 관계를 끊기
+        comment.removeProduct();
+        commentRepository.delete(comment);
     }
 }

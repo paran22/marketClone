@@ -1,5 +1,6 @@
 package com.example.marketclone.responseDto;
 
+import com.example.marketclone.model.OrderState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -14,6 +15,6 @@ public class OrderResponseDto {
     private List<ProductResponseDto> product;
     private Long totalPrice;
     private Long deliveryFee;
-    private String state;
+    private OrderState state;
 
 }

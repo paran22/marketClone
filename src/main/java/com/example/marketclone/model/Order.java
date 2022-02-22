@@ -25,8 +25,9 @@ public class Order extends Timestamped{
     @Column(nullable = false)
     private Long deliveryFee;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String state;
+    private OrderState state;
 
     // fetch 기본값 EAGER
     @ManyToOne
@@ -42,7 +43,7 @@ public class Order extends Timestamped{
     public void setOrder(Long totalPrice, Long deliveryFee) {
         this.totalPrice = totalPrice;
         this.deliveryFee = deliveryFee;
-        this.state = "주문확인";
+        this.state = OrderState.ORDER_CONFIRM;
     }
 
     //생성 메소드

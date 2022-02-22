@@ -1,10 +1,13 @@
 package com.example.marketclone.model;
 
+import com.example.marketclone.responseDto.CommentResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+
 
 @NoArgsConstructor
 @Getter
@@ -37,6 +40,11 @@ public class Comment extends Timestamped {
         this.product = product;
         product.getCommentList().add(this);
     }
+
+
+
+
+
 
 
 }

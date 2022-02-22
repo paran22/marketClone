@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -64,10 +65,13 @@ public class CommentService {
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
         User user = userDetails.getUser();
         String imgUrl = "";
+        String fileName = "";
         if(img != null) {
-            imgUrl = s3Uploader.upload(img,"review");
+            HashMap<String,String> imgInfo = s3Uploader.upload(img,"review");
+            imgUrl = imgInfo.get("img");
+            fileName = imgInfo.get("fileName");
         }
-        Comment comment = Comment.addComment(product, title, user, content, imgUrl);
+        Comment comment = Comment.addComment(product, title, user, content, imgUrl, fileName);
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getId(), comment.getTitle(), user.getName(),
                 user.getUsername(), comment.getContent(), comment.getCreatedAt(), comment.getImg());
@@ -79,6 +83,9 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
         // comment와 product의 관계를 끊기
+        if (!comment.getImg().equals("")) {
+            s3Uploader.deleteFile(comment.getFilename());
+        }
         comment.removeProduct();
         commentRepository.delete(comment);
     }

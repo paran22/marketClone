@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,8 +23,14 @@ public class CommentController {
 
     // 사진 업로드 테스트
     @PostMapping("/image")
-    public String uploadimage(@RequestParam("img") MultipartFile img) throws IOException {
+    public HashMap<String, String> uploadimage(@RequestParam("img") MultipartFile img) throws IOException {
         return s3Uploader.upload(img, "review");
+    }
+
+    // 사진 삭제 테스트
+    @DeleteMapping("/image")
+    public void deleteimage(@RequestParam String fileName) {
+        s3Uploader.deleteFile(fileName);
     }
 
 

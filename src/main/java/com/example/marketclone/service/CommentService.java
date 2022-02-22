@@ -25,17 +25,15 @@ public class CommentService {
     public List<CommentResponseDto> getAllComments(Long productId) {
         // 반환할 리스트
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-
-        // 1. productId로 product를 찾는다.
-        // 2. commentRepository.findAllByProduct(product)와 같은 메소드를 만들어서 commentList를 찾는다.
-        // + 혹은 product.getCommentList()를 사용한다(LazyInitializationException)뜰 수 있음!
-
-        // productId로 댓글을 찾아서
-        Comment comment = commentRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
-        // 댓글 전체를 불러와 리스트에 저장한다
-        List<Comment> commentList = comment.getProduct().getCommentList();
-
+        
+//        // productId로 댓글을 찾아서
+//        Comment comment = commentRepository.findById(productId)
+//                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+//        // 댓글 전체를 불러와 리스트에 저장한다
+//        List<Comment> commentList = comment.getProduct().getCommentList();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new IllegalArgumentException("상품이 없습니다."));
+        List<Comment> commentList = product.getCommentList();
 
         // for문을 돌면서 정보들 찾아 1. commentId , 2. title , 3. username, 4. name, 5. content, 6.createdAt, 7.img
         for (Comment eachComment : commentList) {

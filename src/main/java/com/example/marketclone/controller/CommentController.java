@@ -30,11 +30,11 @@ public class CommentController {
     }
 
     // 댓글 삭제하기
-    @DeleteMapping("/comment/{commentId}")
-    public void deleteComment(@PathVariable Long commentId,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        commentService.deleteComment(commentId, userDetails);
-    }
+//    @DeleteMapping("/comment/{commentId}")
+//    public void deleteComment(@PathVariable Long commentId,
+//                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        commentService.deleteComment(commentId, userDetails);
+//    }
 
 
     // 댓글 삭제

@@ -1,13 +1,15 @@
 package com.example.marketclone.service;
 
 import com.example.marketclone.model.Comment;
+import com.example.marketclone.model.Product;
+import com.example.marketclone.model.User;
 import com.example.marketclone.repository.CommentRepository;
 import com.example.marketclone.repository.ProductRepository;
 import com.example.marketclone.responseDto.CommentResponseDto;
+import com.example.marketclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +38,29 @@ public class CommentService {
             String name = eachComment.getUser().getName();
             String content = eachComment.getContent();
             String createdAt = eachComment.getCreatedAt();
-            String img = eachComment.getImg();
+//            String img = eachComment.getImg();
             // responseDto에 보낼 정보들 넣어줘
-            CommentResponseDto commentResponseDto = new CommentResponseDto(commentId, title, name, username, content, createdAt, img);
+            CommentResponseDto commentResponseDto = new CommentResponseDto(commentId, title, name, username, content, createdAt
+//                    , img
+            );
             //반환할 리스트에 하나씩 넣어준다
             commentResponseDtoList.add(commentResponseDto);
         }
         // 리스트를 돌려준다
         return commentResponseDtoList;
     }
+
+    public CommentResponseDto createComment(Long productId, UserDetailsImpl userDetails, String title, String content) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
+        User user = userDetails.getUser();
+        Comment comment = Comment.addComment(product, title, user, content);
+        commentRepository.save(comment);
+        return new CommentResponseDto(comment.getId(), comment.getTitle(), user.getName(),
+                user.getUsername(), comment.getContent(), comment.getCreatedAt());
+    }
+
+//    public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
+//
+//    }
 }

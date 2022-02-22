@@ -1,13 +1,10 @@
 package com.example.marketclone.model;
 
-import com.example.marketclone.responseDto.CommentResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
-
 
 @NoArgsConstructor
 @Getter
@@ -28,8 +25,8 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
-    private String img;
+//    @Column(nullable = false)
+//    private String img;
 
     // fetch 기본값 EAGER
     @ManyToOne
@@ -39,6 +36,26 @@ public class Comment extends Timestamped {
     public void setProduct(Product product) {
         this.product = product;
         product.getCommentList().add(this);
+    }
+
+    public void setComment(String title, User user, String content) {
+        this.title = title;
+        this.user = user;
+        this.content = content;
+    }
+
+    // 생성메소드
+    public static Comment addComment(Product product, String title, User user, String content) {
+        Comment comment = new Comment();
+        comment.setProduct(product);
+        comment.setComment(title, user, content);
+        return comment;
+    }
+
+    // product와 연결 제거
+    public void removeProduct() {
+        this.product.getCommentList().remove(this);
+        this.product = null;
     }
 
 

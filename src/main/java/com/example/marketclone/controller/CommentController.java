@@ -26,6 +26,12 @@ public class CommentController {
         return s3Uploader.upload(img, "review");
     }
 
+    // 사진 삭제 테스트
+    @DeleteMapping("/image")
+    public void deleteimage(@RequestParam String fileName) {
+        s3Uploader.deleteFile(fileName);
+    }
+
 
     // 댓글 조회하기
     @GetMapping("/product/{productId}/comments")

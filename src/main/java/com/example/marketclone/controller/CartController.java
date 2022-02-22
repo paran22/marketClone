@@ -1,15 +1,9 @@
 package com.example.marketclone.controller;
 
 
-
-
 import com.example.marketclone.requestDto.CartRequestDto;
-
-import com.example.marketclone.responseDto.CartResponseDto;
-
-import com.example.marketclone.model.Cart;
-
 import com.example.marketclone.requestDto.OrderRequestDto;
+import com.example.marketclone.responseDto.CartResponseDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import com.example.marketclone.service.CartService;
 import com.example.marketclone.service.UserService;
@@ -28,10 +22,11 @@ public class CartController {
 
     //장바구니 담기 POST
     @PostMapping("/cart/{productId}")
-    public CartResponseDto saveCart(@PathVariable Long productId, @RequestBody CartRequestDto cartRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public CartResponseDto saveCart(@PathVariable Long productId,
+                                    @RequestBody CartRequestDto cartRequestDto,
+                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return cartService.saveCart(productId, cartRequestDto, userDetails);
     }
-//
 
     //장바구니 조회 GET
     @GetMapping("/cart")

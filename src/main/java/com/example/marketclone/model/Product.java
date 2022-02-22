@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Getter
@@ -26,7 +25,7 @@ public class Product {
     private int price;
 
     @Column(nullable = false)
-    private String desc;
+    private String description;
 
     @Column(nullable = false)
     private String img;
@@ -38,7 +37,7 @@ public class Product {
     public Product(ProductRequestDto requestDto) {
         this.name = requestDto.getProductName();
         this.price = requestDto.getPrice();
-        this.desc = requestDto.getDesc();
+        this.description = requestDto.getDesc();
         this.img = requestDto.getProductImg();
     }
 

@@ -38,7 +38,7 @@ public class UserService {
             Cart cart = new Cart();
             cartRepository.save(cart);
 
-            User user = new User(username, email, password, name, cart);
+            User user = new User(username, password, email, name, cart);
             userRepository.save(user);
         }
     }

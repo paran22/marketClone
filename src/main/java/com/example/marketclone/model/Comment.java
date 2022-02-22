@@ -52,12 +52,11 @@ public class Comment extends Timestamped {
         return comment;
     }
 
-    // product와 연결 제거
+    // product 연결 제거
     public void removeProduct() {
         this.product.getCommentList().remove(this);
         this.product = null;
     }
-
 
 
 

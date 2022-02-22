@@ -78,15 +78,6 @@ public class CartService {
 
 
 
-//    private ProductInCart saveProductInCart(Long productId, Cart cart, Long count, String state) {
-//        Product product = productRepository.findById(productId)
-//                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
-//        //그 유저가 선택한 프로덕트를 저장
-//        ProductInCart newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
-//        productInCartRepository.save(newProductInCart);
-//        return newProductInCart;
-//    }
-
 
     //    // 장바구니 조회
     @Transactional

@@ -60,7 +60,14 @@ public class CommentService {
                 user.getUsername(), comment.getContent(), comment.getCreatedAt());
     }
 
-//    public void deleteComment(Long commentId, UserDetailsImpl userDetails) {
-//
-//    }
+
+    // 댓글 삭제
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
+        // comment와 product의 관계를 끊기
+        comment.removeProduct();
+        commentRepository.delete(comment);
+    }
+
 }

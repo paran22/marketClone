@@ -29,7 +29,7 @@ public class CommentService {
         // 1. productId로 product를 찾는다.
         // 2. commentRepository.findAllByProduct(product)와 같은 메소드를 만들어서 commentList를 찾는다.
         // + 혹은 product.getCommentList()를 사용한다(LazyInitializationException)뜰 수 있음!
-        
+
         // productId로 댓글을 찾아서
         Comment comment = commentRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));

@@ -1,19 +1,14 @@
 package com.example.marketclone.service;
 
 import com.example.marketclone.requestDto.CartRequestDto;
-
 import com.example.marketclone.requestDto.OrderRequestDto;
 import com.example.marketclone.responseDto.CartResponseDto;
-
-
 import com.example.marketclone.model.*;
 import com.example.marketclone.repository.*;
-
 import com.example.marketclone.responseDto.ProductResponseDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +18,6 @@ import java.util.List;
 @Service
 public class CartService {
 
-    private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ProductInCartRepository productInCartRepository;
@@ -37,7 +31,6 @@ public class CartService {
         //로그인한 유저 userdetail
         //Cart에서 ProductInCart를 즉시로딩으로 불러오니 해결됨
         Cart cart = userDetails.getUser().getCart();
-        String state = "cart";
 
         //상품찾아서 ProductResponseDto에 담기
         Product product = productRepository.findById(productId)
@@ -50,7 +43,7 @@ public class CartService {
         // 장바구니에 담긴 상품이 없으면 새로운 상품 저장
         if (savedProductInCartList.size() == 0) {
             //그 유저가 선택한 프로덕트를 저장
-            newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+            newProductInCart = ProductInCart.addProductInCart(product, count, cart);   // 여기에 product, count, state, cartId
             productInCartRepository.save(newProductInCart);
             // 장바구니에 담긴 상품이 있으면
         } else {
@@ -70,13 +63,11 @@ public class CartService {
                 }
             } // 새로운 상품은 저장
             //그 유저가 선택한 프로덕트를 저장
-            newProductInCart = ProductInCart.addProductInCart(product, count, state, cart);   // 여기에 product, count, state, cartId
+            newProductInCart = ProductInCart.addProductInCart(product, count, cart);   // 여기에 product, count, state, cartId
             productInCartRepository.save(newProductInCart);
         }
         return new CartResponseDto(newProductInCart.getId(), productResponseDto, count);
     }
-
-
 
 
     //    // 장바구니 조회
@@ -182,7 +173,7 @@ public class CartService {
 
         // productInCart 상태 변경, order 추가, cart 연결제거
         for (ProductInCart productInCart : productInCartList ) {
-            productInCart.setState("order");
+            productInCart.setState(ProductState.ORDER);
             productInCart.setOrder(order);
             productInCart.removeCart();
             productInCartRepository.save(productInCart);

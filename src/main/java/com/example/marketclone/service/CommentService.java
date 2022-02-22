@@ -1,5 +1,6 @@
 package com.example.marketclone.service;
 
+
 import com.example.marketclone.model.Comment;
 import com.example.marketclone.model.Product;
 import com.example.marketclone.model.User;
@@ -9,7 +10,9 @@ import com.example.marketclone.responseDto.CommentResponseDto;
 import com.example.marketclone.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +22,7 @@ import java.util.List;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final ProductRepository productRepository;
+    private final S3Uploader s3Uploader;
 
 
     // 댓글 조회하기
@@ -43,10 +47,10 @@ public class CommentService {
             String name = eachComment.getUser().getName();
             String content = eachComment.getContent();
             String createdAt = eachComment.getCreatedAt();
-//            String img = eachComment.getImg();
+            String img = eachComment.getImg();
             // responseDto에 보낼 정보들 넣어줘
             CommentResponseDto commentResponseDto = new CommentResponseDto(commentId, title, name, username, content, createdAt
-//                    , img
+                    , img
             );
             //반환할 리스트에 하나씩 넣어준다
             commentResponseDtoList.add(commentResponseDto);
@@ -55,14 +59,15 @@ public class CommentService {
         return commentResponseDtoList;
     }
 
-    public CommentResponseDto createComment(Long productId, UserDetailsImpl userDetails, String title, String content) {
+    public CommentResponseDto createComment(Long productId, UserDetailsImpl userDetails, String title, String content, MultipartFile img) throws IOException {
         Product product = productRepository.findById(productId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
         User user = userDetails.getUser();
-        Comment comment = Comment.addComment(product, title, user, content);
+        String imgUrl = s3Uploader.upload(img,"review");
+        Comment comment = Comment.addComment(product, title, user, content, imgUrl);
         commentRepository.save(comment);
         return new CommentResponseDto(comment.getId(), comment.getTitle(), user.getName(),
-                user.getUsername(), comment.getContent(), comment.getCreatedAt());
+                user.getUsername(), comment.getContent(), comment.getCreatedAt(), comment.getImg());
     }
 
 

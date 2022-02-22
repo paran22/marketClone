@@ -25,8 +25,8 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String content;
 
-//    @Column(nullable = false)
-//    private String img;
+    @Column(nullable = false)
+    private String img;
 
     // fetch 기본값 EAGER
     @ManyToOne
@@ -38,17 +38,18 @@ public class Comment extends Timestamped {
         product.getCommentList().add(this);
     }
 
-    public void setComment(String title, User user, String content) {
+    public void setComment(String title, User user, String content, String img) {
         this.title = title;
         this.user = user;
         this.content = content;
+        this.img = img;
     }
 
     // 생성메소드
-    public static Comment addComment(Product product, String title, User user, String content) {
+    public static Comment addComment(Product product, String title, User user, String content, String img) {
         Comment comment = new Comment();
         comment.setProduct(product);
-        comment.setComment(title, user, content);
+        comment.setComment(title, user, content, img);
         return comment;
     }
 

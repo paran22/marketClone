@@ -26,7 +26,6 @@ public class UserController {
     //회원 정보 조회
     @GetMapping("/userinfo")
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        UserInfoDto userInfoDto = userService.getUserInfo(userDetails);
-        return userInfoDto;
+        return userService.getUserInfo(userDetails);
     }
 }

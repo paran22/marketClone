@@ -37,8 +37,9 @@ public class CommentController {
     public CommentResponseDto createComment(@PathVariable Long productId,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails,
                                             @RequestParam String title,
-                                            @RequestParam String content) {
-        return commentService.createComment(productId, userDetails, title, content);
+                                            @RequestParam String content,
+                                            @RequestParam MultipartFile img) throws IOException {
+        return commentService.createComment(productId, userDetails, title, content, img);
     }
 
     // 댓글 삭제하기

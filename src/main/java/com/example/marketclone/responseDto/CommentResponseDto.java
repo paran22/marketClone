@@ -13,7 +13,7 @@ public class CommentResponseDto {
     private String name;
     private String content;
     private String createdAt;
-//    private String img;
+    private String img;
 
     public CommentResponseDto(Comment comment) {
         this.commentId = comment.getId();
@@ -22,12 +22,12 @@ public class CommentResponseDto {
         this.name = comment.getUser().getName();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
-//        this.img = comment.getImg();
+        this.img = comment.getImg();
     }
 
 
     public CommentResponseDto(Long commentId, String title, String name, String username, String content, String createdAt
-//            , String img
+            , String img
     ) {
         this.commentId = commentId;
         this.title = title;
@@ -35,6 +35,6 @@ public class CommentResponseDto {
         this.name = name;
         this.content = content;
         this.createdAt = createdAt;
-//        this.img = img;
+        this.img = img;
     }
 }

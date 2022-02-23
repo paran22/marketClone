@@ -48,11 +48,11 @@ public class ProductService {
         return new ProductResponseDto(foundProduct);
     }
 
-    // Test용 product 등록 메소드 - TestDataRunner에서 사용
-//    public void testRegisterProduct(ProductRequestDto productRequestDto) {
-//        Product product = new Product(productRequestDto);
-//        productRepository.save(product);
-//    }
+    //Test용 product 등록 메소드 - TestDataRunner에서 사용
+    public void testRegisterProduct(ProductRequestDto productRequestDto) {
+        Product product = new Product(productRequestDto);
+        productRepository.save(product);
+    }
 
 
     // RDS에 상품 등록 메소드

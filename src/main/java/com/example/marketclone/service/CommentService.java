@@ -61,9 +61,13 @@ public class CommentService {
     }
 
     public CommentResponseDto createComment(Long productId, UserDetailsImpl userDetails, String title, String content, MultipartFile img) throws IOException {
+
+        // 상품, 유저 정보
         Product product = productRepository.findById(productId)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
         User user = userDetails.getUser();
+
+        // 이미지 저장하고 url과 fileName 받기
         String imgUrl = "";
         String fileName = "";
         if(img != null) {
@@ -71,8 +75,11 @@ public class CommentService {
             imgUrl = imgInfo.get("img");
             fileName = imgInfo.get("fileName");
         }
+
+        // 댓글 생성 및 저장
         Comment comment = Comment.addComment(product, title, user, content, imgUrl, fileName);
         commentRepository.save(comment);
+
         return new CommentResponseDto(comment.getId(), comment.getTitle(), user.getName(),
                 user.getUsername(), comment.getContent(), comment.getCreatedAt(), comment.getImg());
     }
@@ -82,11 +89,15 @@ public class CommentService {
     public void deleteComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("댓글을 찾을 수 없습니다."));
-        // comment와 product의 관계를 끊기
+
+        // 저장된 이미지가 있으면 S3에서 저장된 이미지 지우기
         if (!comment.getImg().equals("")) {
             s3Uploader.deleteFile(comment.getFilename());
         }
+
+        // comment와 product의 관계를 끊기
         comment.removeProduct();
+
         commentRepository.delete(comment);
     }
 

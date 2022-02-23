@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -36,6 +37,9 @@ public class S3Uploader {
 
     // 파라미터로 multipartFile(업로드하려는 파일)과 dirName(이 파일을 업로드하고 싶은 S3 버킷의 폴더 이름)을 받는다.
     public HashMap<String, String> upload(MultipartFile multipartFile, String dirName) throws IOException {
+
+        // 0. 이미지 파일인지 체크
+        isImage(multipartFile);
 
         // 1. 사전 준비
         // 1-1 메타데이터 생성
@@ -71,9 +75,10 @@ public class S3Uploader {
     // 4. S3에 저장된 파일 이름과 주소 반환
     public HashMap<String, String> saveAndupload(MultipartFile multipartFile, String dirName) throws IOException {
 
+        // 0. 이미지 파일인지 체크
+        isImage(multipartFile);
 
         // 1. 서버에 임시 파일 저장
-
         // 1-1 서버에 임시 파일을 저장할 폴더가 없으면 새로 생성
         File Folder = new File(System.getProperty("user.dir")+"/tempFileFolder"); // '/'으로 적든 '\\'으로 적든 같다.
         if (!Folder.exists()) {
@@ -100,7 +105,6 @@ public class S3Uploader {
 
 
         // 2. S3에 파일 업로드
-
         // 2-1 S3에 저장할 파일명 생성
         // UUID 사용 이유 : 이름이 같은 파일들이 서로 덮어쓰지 않고 구분될 수 있도록
         String fileName = createFileName(multipartFile);
@@ -117,7 +121,6 @@ public class S3Uploader {
         }
 
         // 4. S3에 저장된 파일 이름과 주소 반환
-
         // 해시맵으로 반환
         HashMap<String, String> imgInfo = new HashMap<>();
         imgInfo.put("fileName", uploadImageName);
@@ -154,5 +157,19 @@ public class S3Uploader {
         String fileName = !ext.equals("")?name+"."+ext:name;
 
         return fileName;
+    }
+
+    // 이미지 파일인지 확인하는 메소드
+    private void isImage(MultipartFile multipartFile) throws IOException {
+
+        // tika를 이용해 파일 MIME 타입 체크
+        // 파일명에 .jpg 식으로 붙는 확장자는 없앨 수도 있고 조작도 가능하므로 MIME 타입을 체크하는 것이 좋다.
+        Tika tika = new Tika();
+        String mimeType = tika.detect(multipartFile.getInputStream());
+
+        // MIME타입이 이미지가 아니면 exception 발생생
+        if (!mimeType.startsWith("image/")) {
+            throw new IllegalArgumentException("업로드하려는 파일이 이미지 파일이 아닙니다.");
+        }
     }
 }

@@ -67,9 +67,14 @@ public class S3Uploader {
         return imgInfo;
     }
 
+    // 파일 삭제하기
+    public void deleteFile(String fileName) {
+        amazonS3Client.deleteObject(bucket, fileName);
+    }
 
-    // 전달 받은 데이터를 서버에 저장하는 과정을 거쳐 업로드하는 방법 - 첫 시도에 사용했던 방법
-    // 1. 전달받은 파일을 서버에 저장, 즉 업로드를 위한 임시 파일 저장
+
+    // 처음 사용했던 방법 - 전달 받은 데이터를 서버에 저장하는 과정을 거쳐 업로드하기기
+   // 1. 전달받은 파일을 서버에 저장, 즉 업로드를 위한 임시 파일 저장
     // 2. S3에 서버의 임시 파일 업로드
     // 3. 서버의 임시 파일 삭제
     // 4. S3에 저장된 파일 이름과 주소 반환
@@ -127,12 +132,6 @@ public class S3Uploader {
         imgInfo.put("img",uploadImageUrl);
         return imgInfo;
 
-    }
-
-
-    // 파일 삭제하기
-    public void deleteFile(String fileName) {
-        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 
 

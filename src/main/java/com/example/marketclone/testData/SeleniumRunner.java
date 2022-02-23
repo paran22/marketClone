@@ -17,28 +17,32 @@ public class SeleniumRunner {
 
     public List<Product> getProducts() {
 
-        // 현재 package의 workspace 경로, Windows는 [ chromedriver.exe ]
-        Path path = Paths.get(System.getProperty("user.dir"), "src/main/resources/chromedriver_win32/chromedriver.exe");  // 현재 package의
+        // 실행시킬 웹 브라우저의 경로 ( 프로젝트 경로 + 자세한 경로 )
+                // System.getProperty() : 시스템 정보를 가져올 때 사용
+                // "user.dir"을 넣으면 현재 디렉토리 출력
+        Path path = Paths.get(System.getProperty("user.dir"), "src/main/resources/chromedriver_win32/chromedriver.exe");
 
-        // WebDriver 경로 설정
+        // WebDriver의 실행 경로 설정
         System.setProperty("webdriver.chrome.driver", path.toString());
 
-        // WebDriver 옵션 설정
+        // WebDriver의 옵션 설정
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");            // 전체화면으로 실행
         options.addArguments("--disable-popup-blocking");    // 팝업 무시
         options.addArguments("--disable-default-apps");     // 기본앱 사용안함
         options.addArguments("headless");                   // 브라우저 실행이 내부로 전환, 눈에 안보인다.
+                                                            // 중간에 에러가 발생하면 브라우저가 종료되지 않으므로 기능 구현 중에는 보이게 해주는게 좋다.
 
         // WebDriver 객체 생성
         ChromeDriver driver = new ChromeDriver(options);
 
-        // 웹페이지 요청 (마켓컬리-베스트)
+        // 웹페이지 요청 (마켓컬리 - 베스트 )
         driver.get("https://www.kurly.com/shop/goods/goods_list.php?category=029");
 
 
-        //브라우저가 실행되는 시간을 기다려준다.
-        // 자바가 셀레니움보다 빨라서 1초씩은 기다려줍니다. 브라우저 열리기도 전에 태그를 가져올수 있기떄문에
+        // 브라우저가 실행되는 시간을 기다려준다.
+                // 브라우저가 열리기도 전에 태그를 가져올 수 있기 때문에 1초 정도 기다리는 시간을 설정해놓는게 좋다.
+                // (설정 안하면 될 때도 있고 안될 때도 있다)
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -56,7 +60,7 @@ public class SeleniumRunner {
 
         for (int i = 0; i < names.size(); i++) {
 
-            // 값이 들어오지 않으면 건너 뛰기
+            // 값이 하나라도 들어오지 않으면 건너 뛰기
             if (names.get(i) == null || prices.get(i) == null || descs.get(i) == null || imgs.get(i) == null) {
                 System.out.println("값이 존재하지 않습니다.");
                 continue;
@@ -81,7 +85,7 @@ public class SeleniumRunner {
             products.add(product);
         }
 
-        // 탭 종료
+        // Webdriver 종료
         driver.close();
 
         return products;

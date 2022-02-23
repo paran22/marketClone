@@ -40,7 +40,7 @@
 //    @Override
 //    public void run(ApplicationArguments args) throws Exception {
 //
-//        // 저장할 상품들
+//        // 테스트용으로 h2에 저장할 상품들
 //        ProductRequestDto requestDto1 = new ProductRequestDto(
 //                "[풀무원] 올바른 핫도그 5개입",
 //                6300,
@@ -101,7 +101,7 @@
 //                "컬리가 만든 물티슈의 최선",
 //                "https://img-cf.kurly.com/shop/data/goods/161053203517y0.jpg");
 //
-//        // 상품 저장
+//        // h2에 상품 저장
 //        productService.testRegisterProduct(requestDto1);
 //        productService.testRegisterProduct(requestDto2);
 //        productService.testRegisterProduct(requestDto3);
@@ -113,7 +113,7 @@
 //        productService.testRegisterProduct(requestDto9);
 //        productService.testRegisterProduct(requestDto10);
 //
-//        // 테스트 User 생성
+//        // h2에 테스트 User 생성
 //        Cart cart = new Cart();
 //        cartRepository.save(cart);
 //        User testUser1 = new User("abc", passwordEncoder.encode("aaaa1234!"),

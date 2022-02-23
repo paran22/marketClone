@@ -154,6 +154,7 @@ public class S3Uploader {
             name = name.substring(0,100);
         }
 
+        // S3에 저장할 파일 이름 생성
         String fileName = !ext.equals("")?name+"."+ext:name;
 
         return fileName;

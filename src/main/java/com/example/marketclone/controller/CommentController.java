@@ -21,19 +21,6 @@ public class CommentController {
     private final CommentService commentService;
     private final S3Uploader s3Uploader;
 
-    // 사진 업로드 테스트
-    @PostMapping("/image")
-    public HashMap<String, String> uploadimage(@RequestParam("img") MultipartFile img) throws IOException {
-        return s3Uploader.upload(img, "review");
-    }
-
-    // 사진 삭제 테스트
-    @DeleteMapping("/image")
-    public void deleteimage(@RequestParam String fileName) {
-        s3Uploader.deleteFile(fileName);
-    }
-
-
     // 댓글 조회하기
     @GetMapping("/product/{productId}/comments")
     public List<CommentResponseDto> getAllComments(@PathVariable Long productId) {
@@ -56,4 +43,18 @@ public class CommentController {
     public void deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);
     }
+
+
+    //    // 사진 업로드 테스트
+//    @PostMapping("/image")
+//    public HashMap<String, String> uploadimage(@RequestParam("img") MultipartFile img) throws IOException {
+//        return s3Uploader.upload(img, "review");
+//    }
+//
+//    // 사진 삭제 테스트
+//    @DeleteMapping("/image")
+//    public void deleteimage(@RequestParam String fileName) {
+//        s3Uploader.deleteFile(fileName);
+//    }
+
 }

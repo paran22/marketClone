@@ -5,7 +5,7 @@
 * 참여인원
   * 프론트엔드 : 오예준, 최종현
   * 백엔드 : 고혜지, 최규원, 김가은
-* 프론트엔드 : React
+* 프론트엔드 : https://github.com/oagree0123/MarketKulry_clone
 
 ## 사용 기술(백엔드)
 * Spring boot
